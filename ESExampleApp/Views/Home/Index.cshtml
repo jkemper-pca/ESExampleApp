@@ -45,6 +45,9 @@
                     <td>
                         @person.JobDescription
                     </td>
+                    <td>
+                        <button class="btn">@Html.ActionLink("Edit", "Edit", "Home", new { id = person.Id }) </button>
+                    </td>
                 </tr>
             }
         </tbody>

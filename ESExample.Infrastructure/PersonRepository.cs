@@ -22,6 +22,7 @@ namespace ESExampleApp.Infrastructure
 
         public string Add(Person p)
         {
+            p.Id = Guid.NewGuid().ToString();
             var response = client.IndexDocumentAsync(p).Result;
             return response.Id;
         }
@@ -39,9 +40,10 @@ namespace ESExampleApp.Infrastructure
             ).Documents;
         }
 
-        public Person Get(int id)
+        public Person Get(string id)
         {
-            throw new NotImplementedException();
+            var response = client.Get<Person>(id);
+            return response.Source;
         }
 
         public void Remove(Person p)

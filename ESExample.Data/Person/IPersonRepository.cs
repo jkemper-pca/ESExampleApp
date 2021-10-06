@@ -14,7 +14,7 @@ namespace ESExampleApp.Core.Interfaces
 
         IReadOnlyCollection<Person> Get();
 
-        Person Get(int id);
+        Person Get(string id);
 
         IReadOnlyCollection<Person> Search(string search);
     }
