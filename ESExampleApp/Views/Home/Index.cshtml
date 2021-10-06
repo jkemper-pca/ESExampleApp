@@ -2,7 +2,51 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@model IReadOnlyCollection<ESExampleApp.Core.Person>
+
+@using (Html.BeginForm("Index", "Home", FormMethod.Post))
+{
+<div class="row">
+    <div class="col-md-2">
+        <label>Search:</label>
+    </div>
+    <div class="col-md-9">
+        <input class="form-control" name="search" />
+    </div>
+    <div class="col-md-1">
+        <button class="btn btn-primary">Search</button>
+    </div>
+</div>
+}
+
+<br />
+<br />
+
+
+<div class="col-md-12">
+    <table class="table">
+        <thead>
+            <tr>
+                <td>
+                    Name
+                </td>
+                <td>
+                    Job Description
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var person in Model)
+            {
+                <tr>
+                    <td>
+                        @person.FullName
+                    </td>
+                    <td>
+                        @person.JobDescription
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>

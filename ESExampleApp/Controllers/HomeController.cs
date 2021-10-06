@@ -1,32 +1,47 @@
-﻿using ESExampleApp.Models;
+﻿using ESExampleApp.Core;
+using ESExampleApp.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ESExampleApp.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IPersonRepository personRepository;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IPersonRepository personRepository)
         {
             _logger = logger;
+            this.personRepository = personRepository;
+
         }
 
+        [HttpGet]
         public IActionResult Index()
+        {
+            return View(personRepository.Get());
+        }
+
+        [HttpPost]
+        public IActionResult Index(string search)
+        {
+            var result = personRepository.Search(search);
+            return View(result);
+        }
+
+        [HttpGet]
+        public IActionResult Add()
         {
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        [HttpPost]
+        public IActionResult Add(Person person)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            personRepository.Add(person);
+
+            return RedirectToAction("Index", "Home", new { added = "true" });
         }
     }
 }
