@@ -10,9 +10,12 @@ namespace ESExampleApp.Infrastructure
     public class PersonRepository : IPersonRepository
     {
         private ElasticClient client;
+        private ESExampleContext ESExampleContext;
 
-        public PersonRepository()
+
+        public PersonRepository(ESExampleContext context)
         {
+            ESExampleContext = context;
             client = new ElasticClient(
                 new ConnectionSettings(
                     new Uri("http://localhost:9200"))
@@ -23,13 +26,21 @@ namespace ESExampleApp.Infrastructure
         public string Add(Person p)
         {
             p.Id = Guid.NewGuid().ToString();
+
+            ESExampleContext.Add(p);
+            ESExampleContext.SaveChanges();
+
             var response = client.IndexDocumentAsync(p).Result;
             return response.Id;
         }
 
         public void Edit(Person p)
         {
-            throw new NotImplementedException();
+            ESExampleContext.Update(p);
+            ESExampleContext.SaveChanges();
+
+            client.Update<Person>(p.Id, u => u
+                                .Doc(p));
         }
 
         public IReadOnlyCollection<Person> Get()
@@ -42,8 +53,10 @@ namespace ESExampleApp.Infrastructure
 
         public Person Get(string id)
         {
-            var response = client.Get<Person>(id);
-            return response.Source;
+            //var response = client.Get<Person>(id);
+            //return response.Source;
+
+            return ESExampleContext.Person.Find(id);
         }
 
         public void Remove(Person p)

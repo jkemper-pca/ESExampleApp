@@ -43,5 +43,21 @@ namespace ESExampleApp.Controllers
 
             return RedirectToAction("Index", "Home", new { added = "true" });
         }
+
+        [HttpGet]
+        public IActionResult Edit(string id)
+        {
+            return View(personRepository.Get(id));
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Person p)
+        {
+            if (ModelState.IsValid)
+            {
+                personRepository.Edit(p);
+            }
+            return RedirectToAction("Index");
+        }
     }
 }
