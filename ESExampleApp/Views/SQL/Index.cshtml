@@ -6,17 +6,22 @@
 
 @using (Html.BeginForm("Index", "SQL", FormMethod.Post))
 {
-<div class="row">
-    <div class="col-md-2">
-        <label>Search:</label>
+    <div class="row">
+        <div class="col-md-2">
+            <label>Search:</label>
+        </div>
+        <div class="col-md-9">
+            <input class="form-control" name="search" value="@ViewBag.PreviousSearch" />
+        </div>
+        <div class="col-md-1">
+            <button class="btn btn-primary">Search</button>
+        </div>
     </div>
-    <div class="col-md-9">
-        <input class="form-control" name="search" />
-    </div>
-    <div class="col-md-1">
-        <button class="btn btn-primary">Search</button>
-    </div>
-</div>
+}
+@if (ViewBag.ExecutionTime != null)
+{
+    <span><small class="subtext">Search took: @ViewBag.ExecutionTime</small></span>
+    <span><small class="subtext">Number of results: @Model.Count</small></span>
 }
 
 <br />
@@ -33,6 +38,9 @@
                 <td>
                     Job Description
                 </td>
+                <td>
+                    Long Description
+                </td>
             </tr>
         </thead>
         <tbody>
@@ -44,6 +52,9 @@
                     </td>
                     <td>
                         @person.JobDescription
+                    </td>
+                    <td>
+                        @person.LongDescription.Substring(0, 1000)
                     </td>
                     <td>
                         <button class="btn">@Html.ActionLink("Edit", "Edit", "Home", new { id = person.Id }) </button>

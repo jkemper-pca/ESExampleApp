@@ -4,21 +4,21 @@
 
 @model IReadOnlyCollection<ESExampleApp.Core.Person>
 
-@using (Html.BeginForm("Index", "ES", FormMethod.Post))
+@using (Html.BeginForm("BigSearch", "SQL", FormMethod.Post))
 {
-<div class="row">
-    <div class="col-md-2">
-        <label>Search:</label>
+    <div class="row">
+        <div class="col-md-2">
+            <label>Search Long Description:</label>
+        </div>
+        <div class="col-md-9">
+            <input class="form-control" name="search" value="@ViewBag.PreviousSearch" />
+        </div>
+        <div class="col-md-1">
+            <button class="btn btn-primary">Search</button>
+        </div>
     </div>
-    <div class="col-md-9">
-        <input class="form-control" name="search" value="@ViewBag.PreviousSearch"/>
-    </div>
-    <div class="col-md-1">
-        <button class="btn btn-primary">Search</button>
-    </div>
-</div>
 }
-@if(ViewBag.ExecutionTime != null)
+@if (ViewBag.ExecutionTime != null)
 {
     <span><small class="subtext">Search took: @ViewBag.ExecutionTime</small></span>
     <span><small class="subtext">Number of results: @Model.Count</small></span>

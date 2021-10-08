@@ -14,6 +14,7 @@ namespace ESExampleApp.Generator
         public static void GenerateRecords(IPersonRepository personRepository)
         {
             List<Person> persons = new List<Person>();
+            int maxRecords = 10000;
 
             var path = @"records.csv";
             using (TextFieldParser csvParser = new TextFieldParser(path))
@@ -21,14 +22,14 @@ namespace ESExampleApp.Generator
                 csvParser.SetDelimiters(new string[] { "," });
                 csvParser.HasFieldsEnclosedInQuotes = true;
 
-                while (!csvParser.EndOfData)
+                while (!csvParser.EndOfData && persons.Count < maxRecords)
                 {
                     string[] fields = csvParser.ReadFields();
-                    persons.Add(new Person { FirstName = fields[0], LastName = fields[1], JobDescription = fields[2] });
+                    persons.Add(new Person { FirstName = fields[0], LastName = fields[1], JobDescription = fields[2], LongDescription = TextGenerator.LoremIpsum(50, 150, 5, 10, 1)});
                 }
             }
 
-            personRepository.BulkAdd(persons);
+            personRepository.BulkAdd(persons.GetRange(0, 1000));
         }
     }
 }

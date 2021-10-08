@@ -2,6 +2,7 @@
 using ESExampleApp.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 
 namespace ESExampleApp.Controllers
 {
@@ -26,9 +27,30 @@ namespace ESExampleApp.Controllers
         [HttpPost]
         public IActionResult Index(string search)
         {
+            var stopwatch = Stopwatch.StartNew();
             var result = personRepository.ESSearch(search);
+            stopwatch.Stop();
             ViewBag.PreviousSearch = search;
+            ViewBag.ExecutionTime = stopwatch.Elapsed;
             return View(result);
         }
+
+        [HttpGet]
+        public IActionResult BigSearch()
+        {
+            return View(personRepository.Get());
+        }
+
+        [HttpPost]
+        public IActionResult BigSearch(string search)
+        {
+            var stopwatch = Stopwatch.StartNew();
+            var result = personRepository.ESBigSearch(search);
+            stopwatch.Stop();
+            ViewBag.PreviousSearch = search;
+            ViewBag.ExecutionTime = stopwatch.Elapsed;
+            return View(result);
+        }
+
     }
 }

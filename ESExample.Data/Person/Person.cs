@@ -25,5 +25,7 @@ namespace ESExampleApp.Core
         }
 
         public string JobDescription { get; set; }
+
+        public string LongDescription { get; set; }
     }
 }

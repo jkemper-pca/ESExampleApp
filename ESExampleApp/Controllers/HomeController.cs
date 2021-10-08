@@ -62,9 +62,12 @@ namespace ESExampleApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Seed()
+        public IActionResult Seed(int count = 1)
         {
-            RecordGenerator.GenerateRecords(personRepository);
+            for(int i = 0; i < count; i++)
+            {
+                RecordGenerator.GenerateRecords(personRepository);
+            }
 
 
             return RedirectToAction("Index");
