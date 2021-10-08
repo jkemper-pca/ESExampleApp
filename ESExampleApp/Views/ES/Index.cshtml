@@ -4,14 +4,14 @@
 
 @model IReadOnlyCollection<ESExampleApp.Core.Person>
 
-@*@using (Html.BeginForm("Index", "Home", FormMethod.Post))
+@using (Html.BeginForm("Index", "ES", FormMethod.Post))
 {
 <div class="row">
     <div class="col-md-2">
         <label>Search:</label>
     </div>
     <div class="col-md-9">
-        <input class="form-control" name="search" />
+        <input class="form-control" name="search" value="@ViewBag.PreviousSearch"/>
     </div>
     <div class="col-md-1">
         <button class="btn btn-primary">Search</button>
@@ -20,7 +20,7 @@
 }
 
 <br />
-<br />*@
+<br />
 
 
 <div class="col-md-12">

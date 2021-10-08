@@ -9,7 +9,7 @@ namespace ESExampleApp.Infrastructure
 {
     public class ESExampleContext : DbContext
     {
-        public ESExampleContext([NotNullAttribute] DbContextOptions options) : base(options)
+        public ESExampleContext(DbContextOptions options) : base(options)
         {
         }
 

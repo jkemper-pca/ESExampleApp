@@ -3,6 +3,7 @@ using ESExampleApp.Core.Interfaces;
 using Nest;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ESExampleApp.Infrastructure
@@ -47,7 +48,7 @@ namespace ESExampleApp.Infrastructure
         {
             return client.Search<Person>(s => s
                .From(0)
-               .Size(25)
+               .Size(2000)
             ).Documents;
         }
 
@@ -64,16 +65,49 @@ namespace ESExampleApp.Infrastructure
             throw new NotImplementedException();
         }
 
-        public IReadOnlyCollection<Person> Search(string search)
+
+        public IReadOnlyCollection<Person> ESSearch(string search)
+        {
+            return this.ESSearch(search, 0, 2000);
+        }
+        public IReadOnlyCollection<Person> ESSearch(string search, int from, int size)
         {
             return client.Search<Person>(s => s
                 .Query(q =>
                     q.MultiMatch(c => c
-                        .Fields(f => f.Field(p => p.FullName).Field(p => p.JobDescription))
+                        .Fields(f => f.Field(Infer.Field<Person>(p => p.FullName, 2)) //Multiply score weight by 2 to make this field "more important"
+                        .Field(p => p.JobDescription.Suffix("substring")))
                         .Query(search)
                     )
                 )
+                .From(from)
+                .Size(size)
+                .Sort( s => s
+                    .Descending(SortSpecialField.Score)
+                )
             ).Documents;
+        }
+
+        public List<Person> SQLSearch(string search)
+        {
+            List<Person> matches = ESExampleContext.Person.Where(x => 
+                                        x.FullName.Contains(search) ||
+                                        x.JobDescription.Contains(search)
+                                    ).ToList();
+
+            return matches;
+        }
+
+        public void BulkAdd(List<Person> persons)
+        {
+            foreach(Person person in persons)
+            {
+                person.Id = Guid.NewGuid().ToString();
+            }
+
+            client.IndexMany<Person>(persons);
+            ESExampleContext.Person.AddRange(persons);
+            ESExampleContext.SaveChanges();
         }
     }
 }

@@ -26,6 +26,9 @@ namespace ESExampleApp.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("FullName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("JobDescription")
                         .HasColumnType("nvarchar(max)");
 

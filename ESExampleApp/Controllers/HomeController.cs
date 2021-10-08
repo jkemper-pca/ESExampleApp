@@ -1,5 +1,6 @@
 ﻿using ESExampleApp.Core;
 using ESExampleApp.Core.Interfaces;
+using ESExampleApp.Generator;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -26,7 +27,7 @@ namespace ESExampleApp.Controllers
         [HttpPost]
         public IActionResult Index(string search)
         {
-            var result = personRepository.Search(search);
+            var result = personRepository.ESSearch(search);
             return View(result);
         }
 
@@ -57,6 +58,15 @@ namespace ESExampleApp.Controllers
             {
                 personRepository.Edit(p);
             }
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult Seed()
+        {
+            RecordGenerator.GenerateRecords(personRepository);
+
+
             return RedirectToAction("Index");
         }
     }

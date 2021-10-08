@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ESExampleApp.Core
 {
@@ -12,12 +9,18 @@ namespace ESExampleApp.Core
         [Key]
         public string Id { get; set; }
         public string FirstName { get; set; }
+        
         public string LastName { get; set; }
+        
         public string FullName
         {
             get
             {
-                return FirstName + ' ' + LastName;
+                return string.Format("{0} {1}", FirstName, LastName);
+            }
+            set
+            {
+                ;
             }
         }
 

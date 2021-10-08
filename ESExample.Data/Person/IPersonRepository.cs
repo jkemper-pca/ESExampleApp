@@ -16,6 +16,10 @@ namespace ESExampleApp.Core.Interfaces
 
         Person Get(string id);
 
-        IReadOnlyCollection<Person> Search(string search);
+        IReadOnlyCollection<Person> ESSearch(string search);
+        IReadOnlyCollection<Person> ESSearch(string search, int from, int size);
+        List<Person> SQLSearch(string search);
+
+        void BulkAdd(List<Person> persons);
     }
 }
