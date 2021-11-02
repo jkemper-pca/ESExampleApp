@@ -19,7 +19,7 @@ namespace ESExampleApp.Infrastructure
             ESExampleContext = context;
             client = new ElasticClient(                                         //This should probably be in appsettings.json
                 new ConnectionSettings(
-                    new Uri("http://localhost:9200"))
+                    new Uri("http://20.104.95.239:9200"))
                 .DefaultIndex("person")
                 );
         }
