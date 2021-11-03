@@ -40,6 +40,7 @@ namespace ESExampleApp.Controllers
         [HttpPost]
         public IActionResult Add(Person person)
         {
+            person.LongDescription = TextGenerator.LoremIpsum(50, 150, 5, 10, 1);
             personRepository.Add(person);
 
             return RedirectToAction("Index", "Home", new { added = "true" });
